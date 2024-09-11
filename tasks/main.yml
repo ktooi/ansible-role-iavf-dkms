@@ -1,0 +1,16 @@
+---
+#- include_tasks: variables.yml
+
+- include_tasks: setup_iavf_from_git.yml
+  when: iavf_install_type == 'git'
+
+- include_tasks: setup_iavf_from_source.yml
+  when: iavf_install_type == 'source'
+
+- include_tasks: setup_iavf_from_rpm.yml
+  when: iavf_install_type == 'rpm'
+
+- include_tasks: setup_iavf_from_dkms.yml
+  when: iavf_install_type == 'git' or iavf_install_type == 'source'
+
+

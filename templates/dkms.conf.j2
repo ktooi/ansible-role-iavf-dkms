@@ -1,0 +1,8 @@
+PACKAGE_NAME="iavf"
+PACKAGE_VERSION="{{ iavf_kern_version }}"
+CLEAN="cd src/; make clean"
+MAKE="cd src/; make default"
+BUILT_MODULE_NAME[0]="iavf"
+DEST_MODULE_LOCATION[0]="/updates/dkms"
+AUTOINSTALL="yes"
+BUILT_MODULE_LOCATION="./src"

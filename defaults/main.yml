@@ -1,0 +1,18 @@
+---
+# Choose the installation type (git, source or rpm)
+iavf_install_type: git
+iavf_driver_version: 4.12.5
+iavf_kern_version: "{{ ansible_kernel }}"
+iavf_src_dir: "/usr/src/iavf-{{ iavf_driver_version }}"
+iavf_dkms_conf_file: "{{ iavf_src_dir }}/dkms.conf"
+
+iavf_driver_git_url: https://github.com/intel/ethernet-linux-iavf.git
+iavf_driver_git_tag: "v{{ iavf_driver_version }}"
+
+iavf_force_dkms_install: false
+
+# Required for source url if iavf_install_type is source
+# iavf_driver_tgz_url: https://downloadmirror.intel.com/825844/iavf-4.11.2.tar.gz
+
+# Required for rpm url if iavf_install_type is rpm
+# iavf_driver_rpm_url: https://downloadmirror.intel.com/825844/iavf-4.11.2-1.x86_64.rpm.zip

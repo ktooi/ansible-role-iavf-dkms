@@ -1,0 +1,8 @@
+---
+- name: git clone iavf driver
+  git:
+    repo: "{{ iavf_driver_git_url }}"
+    dest: "{{ iavf_src_dir }}"
+    version: "{{ iavf_driver_git_tag }}"
+  tags: iavf
+  become: true

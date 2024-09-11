@@ -1,0 +1,46 @@
+---
+#- include_tasks: setup-dkms-Debian.yml
+#  when: ansible_os_family == 'Debian'
+
+- name: generate the dkms.conf file
+  ansible.builtin.template:
+    src: dkms.conf.j2
+    dest: "{{ iavf_dkms_conf_file }}"
+    mode: '0644'
+  become: true
+
+- name: check the custom driver is already installed (1/2)
+  ansible.builtin.command:
+    argv:
+      - dkms
+      - status
+      - -m
+      - iavf
+      - -k
+      - "{{ iavf_kern_version }}"
+  register: __dkms_status
+  changed_when: false
+  failed_when: false
+  become: true
+
+- name: check the custom driver is already installed (2/2)
+  set_fact:
+    __driver_installed: "{{ ( __dkms_status.stdout | regex_search('installed$', multiline=true) ) != None }}"
+# $ dkms status
+# i915-sriov-dkms/6.5, 6.5.13-5-pve, x86_64: installed
+# i915-sriov-dkms/6.8, 6.5.13-6-pve, x86_64: installed (WARNING! Diff between built and installed module!)
+
+- name: install the custom driver
+  ansible.builtin.command:
+    argv:
+      - dkms
+      - install
+      - --force
+      - -m
+      - iavf
+      - -v
+      - "{{ iavf_driver_version }}"
+  register: __dkms_result
+  changed_when: "'already installed' not in __dkms_result.stdout"
+  when: not __driver_installed or iavf_force_dkms_install
+  become: true
